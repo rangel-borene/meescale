@@ -13,13 +13,14 @@ export default function RootLayout() {
       }}
     >
       {/* Mantenha apenas as telas que precisam de configurações específicas */}
-      <Stack.Screen 
-        name="chats" 
-        options={{ 
+      <Stack.Screen
+        name="chats"
+        options={{
+          title: 'Chatsssss',
           headerShown: true,
           headerTitle: 'Conversas',
-          headerBackTitle: 'Voltar'
-        }} 
+          // headerBackTitle: 'Voltar'
+        }}
       />
     </Stack>
   );

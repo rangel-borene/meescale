@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios, { isAxiosError } from 'axios';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import React, { useEffect, useState } from 'react';
 
 import {
   ActivityIndicator,
@@ -24,12 +25,33 @@ const api = axios.create({
   }
 });
 
-const LoginScreen = () => {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const verificarToken = async () => {
+
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
+        try {
+          await api.post('/logout', null, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+        } catch (error) {
+          console.error('Erro ao fazer logout:', error);
+        } finally {
+          await AsyncStorage.multiRemove(['token', 'permissions']);
+        }
+      }
+    };
+    verificarToken();
+  }, []);
 
   const handleLogin = async () => {
 
@@ -55,10 +77,13 @@ const LoginScreen = () => {
           ['permissions', JSON.stringify(response.data.permissions)]
         ]);
 
-        // const decodedToken: any = jwtDecode(response.data.token);
-        // console.log('Token decodificado:', decodedToken);
 
-        router.push('/chats');
+        const decodedToken: any = jwtDecode(response.data.token);
+        console.log('Token decodificado:', decodedToken);
+
+        router.replace('/chats');
+        // if (typeof document !== 'undefined')
+        // document.title = 'Chats';
       }
 
     } catch (error) {
@@ -214,4 +239,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default Login;

@@ -69,7 +69,6 @@ const Login = () => {
         password: password.trim()
       });
 
-
       if (response.data.success) {
 
         await AsyncStorage.multiSet([
@@ -82,8 +81,6 @@ const Login = () => {
         console.log('Token decodificado:', decodedToken);
 
         router.replace('/chats');
-        // if (typeof document !== 'undefined')
-        // document.title = 'Chats';
       }
 
     } catch (error) {

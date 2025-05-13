@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useAccount } from '../context/AccountContext';
 
@@ -7,11 +8,23 @@ const AccountMenu = () => {
     const [menuVisible, setMenuVisible] = useState(false);
     const { selectedAccount, setAccount } = useAccount();
 
-    const accounts = [
-        'Conta Pessoal',
-        'Conta Profissional',
-        'Conta de Suporte'
-    ];
+    const [contas, setContas] = useState<string[]>([]);
+
+    useEffect(() => {
+        const loadPermissions = async () => {
+            try {
+                const storedPermissions = await AsyncStorage.getItem('permissions');
+                if (storedPermissions) {
+                    const parsedPermissions = JSON.parse(storedPermissions);
+                    const uniqueContas = [...new Set(parsedPermissions.map((p: any) => p.conta))].filter(Boolean) as string[];
+                    setContas(uniqueContas);
+                }
+            } catch (error) {
+                console.error('Erro ao carregar permissões:', error);
+            }
+        };
+        loadPermissions();
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -31,7 +44,7 @@ const AccountMenu = () => {
                     onPress={() => setMenuVisible(false)}
                 >
                     <View style={styles.menuContainer}>
-                        {accounts.map((account) => (
+                        {contas.map((account) => (
                             <TouchableOpacity
                                 key={account}
                                 style={styles.menuItem}

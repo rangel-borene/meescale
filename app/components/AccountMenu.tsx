@@ -4,6 +4,7 @@ import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+
 const AccountMenu = () => {
     const [menuVisible, setMenuVisible] = useState(false);
     const [selectedAccount, setAccount] = useState('');

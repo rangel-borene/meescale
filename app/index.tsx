@@ -6,7 +6,6 @@ import { ActivityIndicator, InteractionManager, View } from "react-native";
 export default function Index() {
 
   useEffect(() => {
-    console.log('entrou')
     InteractionManager.runAfterInteractions(async () => {
       const token = await AsyncStorage.getItem('token');
       if (!token) {

@@ -1,6 +1,7 @@
 import { Text, View } from "react-native";
 
-export default function Chats() {
+export default function ChatsScreen() {
+
 
   return (
     <View

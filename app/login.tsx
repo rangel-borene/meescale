@@ -73,7 +73,8 @@ const Login = () => {
 
         await AsyncStorage.multiSet([
           ['token', response.data.token],
-          ['permissions', JSON.stringify(response.data.permissions)]
+          ['permissions', JSON.stringify(response.data.permissions)],
+          ['account', response.data.permissions[0].account],
         ]);
 
 

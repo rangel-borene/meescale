@@ -1,23 +1,29 @@
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useAccount } from '../context/AccountContext';
 
 const AccountMenu = () => {
     const [menuVisible, setMenuVisible] = useState(false);
-    const { selectedAccount, setAccount } = useAccount();
+    const [selectedAccount, setAccount] = useState('');
 
-    const [contas, setContas] = useState<string[]>([]);
+    const [accounts, setAccounts] = useState<string[]>([]);
+
 
     useEffect(() => {
         const loadPermissions = async () => {
             try {
+                const storeAccount = await AsyncStorage.getItem('account');
+                setAccount(storeAccount!);
+
+
                 const storedPermissions = await AsyncStorage.getItem('permissions');
+
                 if (storedPermissions) {
                     const parsedPermissions = JSON.parse(storedPermissions);
-                    const uniqueContas = [...new Set(parsedPermissions.map((p: any) => p.conta))].filter(Boolean) as string[];
-                    setContas(uniqueContas);
+                    const uniqueAccounts = [...new Set(parsedPermissions.map((p: any) => p.account))].filter(Boolean) as string[];
+                    setAccounts(uniqueAccounts);
                 }
             } catch (error) {
                 console.error('Erro ao carregar permissões:', error);
@@ -44,13 +50,17 @@ const AccountMenu = () => {
                     onPress={() => setMenuVisible(false)}
                 >
                     <View style={styles.menuContainer}>
-                        {contas.map((account) => (
+                        {accounts.map((account) => (
                             <TouchableOpacity
                                 key={account}
                                 style={styles.menuItem}
-                                onPress={() => {
+                                onPress={async () => {
+                                    await AsyncStorage.setItem('account', account);
                                     setAccount(account);
                                     setMenuVisible(false);
+                                    setTimeout(() => {
+                                        router.replace('/');
+                                    }, 200);
                                 }}
                             >
                                 <Text style={[
@@ -59,6 +69,7 @@ const AccountMenu = () => {
                                 ]}>
                                     {account}
                                 </Text>
+
                                 {account === selectedAccount && (
                                     <Ionicons name="checkmark" size={18} color="#007AFF" />
                                 )}

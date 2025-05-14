@@ -1,15 +1,16 @@
 // app/_layout.tsx
 import { Stack } from "expo-router";
-import AccountMenu from "./components/AccountMenu";
 
 export default function RootLayout() {
 
   return (
     <Stack
       screenOptions={({ route }) => ({
-        headerRight: () => route.name === 'chats' ? <AccountMenu /> : null,
-        headerTitle: 'Conversas',
-        headerShown: route.name === 'chats',
+        // headerRight: () => route.name === 'chats' ? <AccountMenu /> : null,
+        // headerTitle: 'Conversas',
+        // headerShown: route.name === 'chats',
+
+        headerShown: false,
         headerTitleStyle: {
           fontWeight: '600',
           fontSize: 18,
@@ -28,6 +29,7 @@ export default function RootLayout() {
         options={{
           title: 'Chats',
           headerTitle: 'Conversas',
+          headerShown: true
           // headerBackTitle: 'Voltar'
         }}
       />

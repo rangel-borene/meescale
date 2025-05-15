@@ -27,7 +27,6 @@ export default function ChatsScreen() {
         alignItems: "center",
       }}
     >
-      {/* <AccountMenu /> */}
       <Text>Chats</Text>
     </View>
   );

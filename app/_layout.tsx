@@ -1,38 +1,54 @@
-// app/_layout.tsx
-import { Stack } from "expo-router";
+import { Stack, usePathname } from 'expo-router';
+import { StyleSheet, View } from 'react-native';
+import TeamChat from './components/TeamChat';
 
 export default function RootLayout() {
+  const pathname = usePathname(); // Captura a rota atual
+
+  const handleChatPress = () => {
+    console.log('clicou');
+    // navigation.navigate('ChatScreen');
+  };
 
   return (
-    <Stack
-      screenOptions={({ route }) => ({
-        // headerRight: () => route.name === 'chats' ? <AccountMenu /> : null,
-        // headerTitle: 'Conversas',
-        // headerShown: route.name === 'chats',
-
-        headerShown: false,
-        headerTitleStyle: {
-          fontWeight: '600',
-          fontSize: 18,
-          color: '#333',
-        },
-        tabBarStyle: {
-          height: 60,
-          paddingBottom: 8,
-        },
-      })}
-    >
-      {/* Mantenha apenas as telas que precisam de configurações específicas */}
-
-      <Stack.Screen
-        name="chats"
-        options={{
-          title: 'Chats',
-          headerTitle: 'Conversas',
-          headerShown: true
-          // headerBackTitle: 'Voltar'
+    <View style={styles.container}>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          headerTitleStyle: {
+            fontWeight: '600',
+            fontSize: 18,
+            color: '#333',
+          }
         }}
-      />
-    </Stack>
+      >
+        <Stack.Screen
+          name="login" // Garanta que esta tela existe
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="chats"
+          options={{
+            title: 'Conversas',
+            headerShown: true
+          }}
+        />
+      </Stack>
+
+      {/* Mostra o ChatMenu apenas se NÃO estiver na tela de login */}
+      {pathname !== '/login' && (
+        <TeamChat
+          onPress={handleChatPress}
+          notificationCount={3}
+        />
+      )}
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    position: 'relative',
+  },
+});

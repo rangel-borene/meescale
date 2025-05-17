@@ -55,12 +55,12 @@ const styles = StyleSheet.create({
     container: {
         position: 'absolute',
         alignSelf: 'center',
-        bottom: -30, // Metade do botão oculta (ajuste conforme tamanho)
+        bottom: 20,
         zIndex: 999,
     },
     button: {
-        width: 60,
-        height: 60,
+        width: 50,
+        height: 50,
         borderRadius: 30,
         backgroundColor: '#2563eb', // Azul
         justifyContent: 'center',

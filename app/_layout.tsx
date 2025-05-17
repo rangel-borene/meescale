@@ -29,7 +29,8 @@ export default function RootLayout() {
         <Stack.Screen
           name="chats"
           options={{
-            title: 'Conversas',
+            title: 'Chats',
+            headerTitleAlign: 'center',
             headerShown: true
           }}
         />

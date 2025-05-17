@@ -1,14 +1,13 @@
-import { Stack, usePathname } from 'expo-router';
+import { Stack } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
-import TeamChat from './components/TeamChat';
 
 export default function RootLayout() {
-  const pathname = usePathname(); // Captura a rota atual
+  // const pathname = usePathname(); // Captura a rota atual
 
-  const handleChatPress = () => {
-    console.log('clicou');
-    // navigation.navigate('ChatScreen');
-  };
+  // const handleChatPress = () => {
+  //   console.log('clicou');
+  //   // navigation.navigate('ChatScreen');
+  // };
 
   return (
     <View style={styles.container}>
@@ -36,13 +35,12 @@ export default function RootLayout() {
         />
       </Stack>
 
-      {/* Mostra o ChatMenu apenas se NÃO estiver na tela de login */}
-      {pathname !== '/login' && (
+      {/* {pathname !== '/login' && (
         <TeamChat
           onPress={handleChatPress}
           notificationCount={3}
         />
-      )}
+      )} */}
     </View>
   );
 }

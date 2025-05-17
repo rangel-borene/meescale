@@ -1,8 +1,9 @@
 import { useNavigation } from "expo-router";
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import { Text, View } from "react-native";
 import AccountMenu from "./components/AccountMenu";
 import MenuLeft from "./components/MenuLeft";
+import TeamChat from "./components/TeamChat";
 
 export default function ChatsScreen() {
 
@@ -24,21 +25,43 @@ export default function ChatsScreen() {
     console.log(number);
     // const savedNumber = await AsyncStorage.getItem('whatsapp-connection');
     // if(savedNumber) setSelectedNumber(savedNumber);
-
     // (number) => console.log('Número selecionado:', number)
   };
 
+  const handleChatPress = () => {
+    console.log('open team chat');
+  };
+
+  const connectToWhatsApp = () => {
+    console.log('conectar whatsapp');
+  }
+
+  const [mounted, setMounted] = useState(false);
+
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => <AccountMenu onAccountChange={handleAccountChange} />,
-
       headerLeft: () => (
         <MenuLeft onConnectionSelect={loadSavedNumber}
-          onConnectToWhatsApp={() => console.log('Iniciar conexão com WhatsApp')}
+          onConnectToWhatsApp={connectToWhatsApp}
         />
       ),
+      headerRight: () => (
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, opacity: mounted ? 1 : 0 }}>
+          <TeamChat
+            onPress={handleChatPress}
+            notificationCount={3}
+          />
+          <AccountMenu onAccountChange={handleAccountChange} />
+        </View>
+      )
     });
-  }, [navigation]);
+
+    const timeoutId = setTimeout(() => {
+      setMounted(true);
+    }, 100);
+
+    return () => clearTimeout(timeoutId);
+  }, [navigation, mounted]);
 
   return (
     <View

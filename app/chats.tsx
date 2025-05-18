@@ -1,4 +1,4 @@
-import { useNavigation } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import { useLayoutEffect, useState } from "react";
 import { Text, View } from "react-native";
 import AccountMenu from "./components/AccountMenu";
@@ -12,6 +12,12 @@ export default function ChatsScreen() {
   const handleAccountChange = (account: string) => {
     console.log("Conta alterada!", account);
     // Você pode colocar qualquer lógica aqui que precise ser executada quando a conta for alterada
+  };
+
+
+
+  const handleManageAccount = () => {
+    router.push('/manageaccount');
   };
 
   // Adicione estas constantes no início do componente
@@ -33,7 +39,7 @@ export default function ChatsScreen() {
   };
 
   const connectToWhatsApp = () => {
-    console.log('conectar whatsapp');
+    router.push('/connectwhatsapp');
   }
 
   const [mounted, setMounted] = useState(false);
@@ -51,7 +57,7 @@ export default function ChatsScreen() {
             onPress={handleChatPress}
             notificationCount={3}
           />
-          <AccountMenu onAccountChange={handleAccountChange} />
+          <AccountMenu onAccountChange={handleAccountChange} onManageAccount={handleManageAccount} />
         </View>
       )
     });

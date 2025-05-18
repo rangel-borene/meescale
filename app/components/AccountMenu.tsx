@@ -6,9 +6,10 @@ import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface Props {
     onAccountChange: (account: string) => void;
+    onManageAccount: () => void;
 }
 
-const AccountMenu = ({ onAccountChange }: Props) => {
+const AccountMenu = ({ onAccountChange, onManageAccount }: Props) => {
     const [menuVisible, setMenuVisible] = useState(false);
     const [selectedAccount, setAccount] = useState('');
     const [accounts, setAccounts] = useState<string[]>([]);
@@ -54,6 +55,18 @@ const AccountMenu = ({ onAccountChange }: Props) => {
                                 )}
                             </TouchableOpacity>
                         ))}
+
+                        <View style={styles.separator} />
+
+                        <TouchableOpacity
+                            style={styles.menuItem}
+                            onPress={() => {
+                                setMenuVisible(false);
+                                onManageAccount();
+                            }}
+                        >
+                            <Text style={[styles.menuText]}>Gerenciar esta Conta</Text>
+                        </TouchableOpacity>
                     </View>
                 </TouchableOpacity>
             </Modal>
@@ -99,6 +112,11 @@ const styles = StyleSheet.create({
     selectedAccount: {
         fontWeight: '600',
         color: '#007AFF',
+    },
+    separator: {
+        height: 1,
+        backgroundColor: '#f0f0f0',
+        marginVertical: 8,
     },
 });
 

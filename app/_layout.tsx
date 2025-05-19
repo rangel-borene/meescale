@@ -31,9 +31,9 @@ export default function RootLayout() {
           }}
         />
         <Stack.Screen
-          name="connectwhatsapp"
+          name="managewhatsapp"
           options={{
-            title: 'Conectar WhatsApp',
+            title: 'Gerenciar este WhatsApp',
           }}
         />
         <Stack.Screen

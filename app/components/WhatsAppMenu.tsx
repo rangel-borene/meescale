@@ -7,7 +7,7 @@ interface Props {
     onConnectToWhatsApp: () => void;
 }
 
-const MenuLeft = ({ onConnectionSelect, onConnectToWhatsApp }: Props) => {
+const WhatsAppMenu = ({ onConnectionSelect, onConnectToWhatsApp }: Props) => {
     const [menuVisible, setMenuVisible] = useState(false);
     const [selectedNumber, setSelectedNumber] = useState('');
     const [connections, setConnections] = useState<string[]>([]);
@@ -26,7 +26,7 @@ const MenuLeft = ({ onConnectionSelect, onConnectToWhatsApp }: Props) => {
     return (
         <View style={styles.container}>
             <TouchableOpacity onPress={() => setMenuVisible(true)}>
-                <Ionicons name="menu-outline" size={28} color="#333" />
+                <Ionicons name="logo-whatsapp" size={28} color="#333" />
             </TouchableOpacity>
 
             <Modal visible={menuVisible} transparent animationType="fade" onRequestClose={() => setMenuVisible(false)}>
@@ -64,8 +64,22 @@ const MenuLeft = ({ onConnectionSelect, onConnectToWhatsApp }: Props) => {
                                 onConnectToWhatsApp();
                             }}
                         >
-                            <Ionicons name="logo-whatsapp" size={18} color="#25D366" />
-                            <Text style={styles.connectButtonText}>Conectar WhatsApp</Text>
+                            {/* <Ionicons name="logo-whatsapp" size={18} color="#25D366" /> */}
+                            <Text style={styles.connectButtonText}>Gerenciar este WhatsApp</Text>
+                        </TouchableOpacity>
+
+
+                        <View style={styles.separator} />
+
+                        <TouchableOpacity
+                            style={styles.connectButton}
+                            onPress={() => {
+                                setMenuVisible(false);
+                                onConnectToWhatsApp();
+                            }}
+                        >
+                            {/* <Ionicons name="logo-whatsapp" size={18} color="#25D366" /> */}
+                            <Text style={styles.connectButtonText}>Conectar um novo WhatsApp</Text>
                         </TouchableOpacity>
                     </View>
                 </TouchableOpacity>
@@ -126,10 +140,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
     },
     connectButtonText: {
-        color: '#25D366',
-        fontWeight: '600',
         fontSize: 16,
+        color: '#333',
     },
 });
 
-export default MenuLeft;
+export default WhatsAppMenu;

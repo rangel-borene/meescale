@@ -2,8 +2,8 @@ import { router, useNavigation } from "expo-router";
 import { useLayoutEffect, useState } from "react";
 import { Text, View } from "react-native";
 import AccountMenu from "./components/AccountMenu";
-import MenuLeft from "./components/MenuLeft";
 import TeamChat from "./components/TeamChat";
+import WhatsAppMenu from "./components/WhatsAppMenu";
 
 export default function ChatsScreen() {
 
@@ -39,7 +39,7 @@ export default function ChatsScreen() {
   };
 
   const connectToWhatsApp = () => {
-    router.push('/connectwhatsapp');
+    router.push('/managewhatsapp');
   }
 
   const [mounted, setMounted] = useState(false);
@@ -47,7 +47,7 @@ export default function ChatsScreen() {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <MenuLeft onConnectionSelect={loadSavedNumber}
+        <WhatsAppMenu onConnectionSelect={loadSavedNumber}
           onConnectToWhatsApp={connectToWhatsApp}
         />
       ),

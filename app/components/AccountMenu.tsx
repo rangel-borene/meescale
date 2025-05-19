@@ -67,6 +67,17 @@ const AccountMenu = ({ onAccountChange, onManageAccount }: Props) => {
                         >
                             <Text style={[styles.menuText]}>Gerenciar esta Conta</Text>
                         </TouchableOpacity>
+                        <View style={styles.separator} />
+
+                        <TouchableOpacity
+                            style={styles.menuItem}
+                            onPress={() => {
+                                setMenuVisible(false);
+                                onManageAccount();
+                            }}
+                        >
+                            <Text style={[styles.menuText]}>Criar uma nova Conta</Text>
+                        </TouchableOpacity>
                     </View>
                 </TouchableOpacity>
             </Modal>

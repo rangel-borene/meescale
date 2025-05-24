@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import PrimaryButton from './components/PrimaryButton';
 
-export default function ManageWhatsApp() {
+export default function ConnectWhatsAppUpdate() {
     // Estados mantidos iguais
     const [callbackUrl, setCallbackUrl] = useState<string>('');
     const [token, setToken] = useState<string>('');

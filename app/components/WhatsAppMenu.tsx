@@ -1,13 +1,15 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
-import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface Props {
     onConnectionSelect: (number: string) => void;
-    onConnectToWhatsApp: () => void;
+    onConnectWhatsAppCreate: () => void;
+    onConnectWhatsAppUpdate: () => void;
+
 }
 
-const WhatsAppMenu = ({ onConnectionSelect, onConnectToWhatsApp }: Props) => {
+const WhatsAppMenu = ({ onConnectionSelect, onConnectWhatsAppCreate, onConnectWhatsAppUpdate }: Props) => {
     const [menuVisible, setMenuVisible] = useState(false);
     const [selectedNumber, setSelectedNumber] = useState('');
     const [connections, setConnections] = useState<string[]>([]);
@@ -15,9 +17,18 @@ const WhatsAppMenu = ({ onConnectionSelect, onConnectToWhatsApp }: Props) => {
     // Mock inicial com 3 números de exemplo
     useEffect(() => {
         const mockConnections = [
-            '+55 11 99999-9999',
+            '+55 11 99999-9991',
+            '+55 11 88888-8882',
+            '+55 11 77777-7773',
+            '+55 11 99999-9994',
+            '+55 11 88888-8885',
+            '+55 11 77777-7776',
+            '+55 11 99999-9997',
             '+55 11 88888-8888',
-            '+55 11 77777-7777'
+            '+55 11 77777-7779',
+            '+55 11 99999-9910',
+            '+55 11 88888-8811',
+            '+55 11 77777-7712'
         ];
         setConnections(mockConnections);
         setSelectedNumber(mockConnections[0]);
@@ -30,56 +41,27 @@ const WhatsAppMenu = ({ onConnectionSelect, onConnectToWhatsApp }: Props) => {
             </TouchableOpacity>
 
             <Modal visible={menuVisible} transparent animationType="fade" onRequestClose={() => setMenuVisible(false)}>
-                <TouchableOpacity
-                    style={styles.overlay}
-                    activeOpacity={1}
-                    onPress={() => setMenuVisible(false)}
-                >
+                <TouchableOpacity style={styles.overlay} activeOpacity={1} onPress={() => setMenuVisible(false)} >
                     <View style={styles.menuContainer}>
-                        {connections.map((number) => (
-                            <TouchableOpacity
-                                key={number}
-                                style={styles.menuItem}
-                                onPress={() => {
-                                    setSelectedNumber(number);
-                                    setMenuVisible(false);
-                                    onConnectionSelect(number);
-                                }}
-                            >
-                                <Text style={[styles.menuText, number === selectedNumber && styles.selectedAccount]}>
-                                    {number}
-                                </Text>
-                                {number === selectedNumber && (
-                                    <Ionicons name="checkmark" size={18} color="#007AFF" />
-                                )}
-                            </TouchableOpacity>
-                        ))}
-
+                        <ScrollView style={styles.menuList}>
+                            {connections.map((number) => (
+                                <TouchableOpacity key={number} style={styles.menuItem} onPress={() => { setSelectedNumber(number); setMenuVisible(false); onConnectionSelect(number); }} >
+                                    <Text style={[styles.menuText, number === selectedNumber && styles.selectedAccount]}>
+                                        {number}
+                                    </Text>
+                                    {number === selectedNumber && (
+                                        <Ionicons name="checkmark" size={18} color="#007AFF" />
+                                    )}
+                                </TouchableOpacity>
+                            ))}
+                        </ScrollView>
                         <View style={styles.separator} />
-
-                        <TouchableOpacity
-                            style={styles.connectButton}
-                            onPress={() => {
-                                setMenuVisible(false);
-                                onConnectToWhatsApp();
-                            }}
-                        >
-                            {/* <Ionicons name="logo-whatsapp" size={18} color="#25D366" /> */}
-                            <Text style={styles.connectButtonText}>Gerenciar este WhatsApp</Text>
+                        <TouchableOpacity style={styles.connectButton} onPress={() => { setMenuVisible(false); onConnectWhatsAppUpdate(); }} >
+                            <Text style={styles.connectButtonText}>Alterar este WhatsApp</Text>
                         </TouchableOpacity>
-
-
                         <View style={styles.separator} />
-
-                        <TouchableOpacity
-                            style={styles.connectButton}
-                            onPress={() => {
-                                setMenuVisible(false);
-                                onConnectToWhatsApp();
-                            }}
-                        >
-                            {/* <Ionicons name="logo-whatsapp" size={18} color="#25D366" /> */}
-                            <Text style={styles.connectButtonText}>Conectar um novo WhatsApp</Text>
+                        <TouchableOpacity style={styles.connectButton} onPress={() => { setMenuVisible(false); onConnectWhatsAppCreate(); }} >
+                            <Text style={styles.connectButtonText}>Adicionar WhatsApp</Text>
                         </TouchableOpacity>
                     </View>
                 </TouchableOpacity>
@@ -143,6 +125,10 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#333',
     },
+    menuList: {
+        maxHeight: 200,
+        width: '100%',
+    }
 });
 
 export default WhatsAppMenu;

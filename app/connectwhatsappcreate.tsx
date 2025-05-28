@@ -25,14 +25,14 @@ const api = axios.create({
 
 
 export default function ConnectWhatsAppCreate() {
-    const [apiToken, setApiToken] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [phoneNumberId, setPhoneNumberId] = useState('');
-    const [wabaId, setWabaId] = useState('');
+    const [apiToken, setApiToken] = useState('EAAVhfkYXoaMBO53UJGLZA0F7A1ZCJypRJOXW5csY4JK4BNlfyrU9Fdw6kx5ER8WIwSa1FQBYEOuCMrXLBuyHntihTd8iblION5B0kXxCQEhSOupqtxjE2SqzYwh6LsvvZC5YZBVMxBHZCTYpmZAruUY5N1vaNHUnYXPtU0jLXA2HS9oODZBW28LUOmQG1Jp1t1ckgZDZD');
+    // const [displayPhoneNumber, setDisplayPhoneNumber] = useState('15556353905');
+    // const [phoneNumberId, setPhoneNumberId] = useState('605865722607740');
+    const [whatsappBusinessId, setWhatsappBusinessId] = useState('1378836803468391');
     const [loading, setLoading] = useState(false);
 
     const validateFields = () => {
-        if (!apiToken || !phoneNumber || !phoneNumberId || !wabaId) {
+        if (!apiToken || !whatsappBusinessId) {
             showToast('error', 'Campos obrigatórios', 'Preencha todos os campos');
 
             return false;
@@ -48,11 +48,9 @@ export default function ConnectWhatsAppCreate() {
 
             const authToken = await AsyncStorage.getItem('token');
 
-            const response = await api.post('/whatsapp-config', {
-                apiToken,
-                phoneNumber,
-                phoneNumberId,
-                wabaId
+            const response = await api.post('/whatsapp-create', {
+                apiToken, //EAAVhfkYXoaMBO53UJGLZA0F7A1ZCJypRJOXW5csY4JK4BNlfyrU9Fdw6kx5ER8WIwSa1FQBYEOuCMrXLBuyHntihTd8iblION5B0kXxCQEhSOupqtxjE2SqzYwh6LsvvZC5YZBVMxBHZCTYpmZAruUY5N1vaNHUnYXPtU0jLXA2HS9oODZBW28LUOmQG1Jp1t1ckgZDZD token
+                whatsappBusinessId //1378836803468391 whatsapp_business_id
             }, {
                 headers: {
                     Authorization: `Bearer ${authToken}`,
@@ -64,11 +62,6 @@ export default function ConnectWhatsAppCreate() {
                 // Limpar formulário se necessário
                 // setCallbackUrl('');
                 // ... outros states
-                // Toast.show({
-                //     type: 'success',
-                //     text1: 'Sucesso',
-                //     text2: 'Configurações salvas!'
-                // });
                 showToast('success', 'Sucesso!', 'Operação concluída com sucesso');
             }
 
@@ -101,32 +94,13 @@ export default function ConnectWhatsAppCreate() {
                 />
 
                 <FormField
-                    label="Número de telefone:"
-                    value={phoneNumber}
-                    onChange={setPhoneNumber}
-                    loading={loading}
-                    placeholder="Digite o número de telefone"
-                    keyboardType="phone-pad"
-                />
-
-                <FormField
-                    label="ID do número de telefone:"
-                    value={phoneNumberId}
-                    onChange={setPhoneNumberId}
-                    loading={loading}
-                    placeholder="Digite o ID do número"
-                    keyboardType="numeric"
-                />
-
-                <FormField
                     label="ID da conta WhatsApp Business:"
-                    value={wabaId}
-                    onChange={setWabaId}
+                    value={whatsappBusinessId}
+                    onChange={setWhatsappBusinessId}
                     loading={loading}
                     placeholder="Digite o ID da conta WABA"
                     keyboardType="numeric"
                 />
-
 
                 <View style={styles.buttonContainer}>
                     <PrimaryButton

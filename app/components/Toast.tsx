@@ -9,8 +9,13 @@ interface ToastContent {
     text2: string;
 }
 
-const ToastManager = {
-    show: (type: ToastType, text1: string, text2: string) => { },
+interface ToastManagerType {
+    show: (type: ToastType, text1: string, text2: string) => void;
+    hide: () => void;
+}
+
+const ToastManager: ToastManagerType = {
+    show: () => { },
     hide: () => { }
 };
 
@@ -20,7 +25,6 @@ export const Toast = () => {
     const [content, setContent] = useState<ToastContent>({ text1: '', text2: '' });
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const autoHideTimeout = useRef<number | null>(null);
-
     const isTouching = useRef(false);
 
     const handleTouchStart = () => {
@@ -40,16 +44,16 @@ export const Toast = () => {
             if (!isTouching.current) {
                 ToastManager.hide();
             }
-        }, 4000);
+        }, 4000) as number;
     };
 
     useEffect(() => {
-        ToastManager.show = (newType, text1, text2) => {
+        ToastManager.show = (newType: ToastType, text1: string, text2: string) => {
             setType(newType);
             setContent({ text1, text2 });
             setVisible(true);
 
-            if (autoHideTimeout.current !== null) {
+            if (autoHideTimeout.current) {
                 clearTimeout(autoHideTimeout.current);
             }
 
@@ -131,15 +135,13 @@ export const showToast = (type: ToastType, title: string, message: string) => {
 };
 
 const styles = StyleSheet.create({
-
     container: {
         position: 'absolute',
-        top: 15,
+        top: 30,
         left: 18,
         right: 18,
         zIndex: 9999,
     },
-
     toastError: {
         backgroundColor: '#FFFAFA',
         borderWidth: 1,

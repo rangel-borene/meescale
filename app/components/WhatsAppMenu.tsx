@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -14,24 +15,32 @@ const WhatsAppMenu = ({ onConnectionSelect, onConnectWhatsAppCreate, onConnectWh
     const [selectedNumber, setSelectedNumber] = useState('');
     const [connections, setConnections] = useState<string[]>([]);
 
-    // Mock inicial com 3 números de exemplo
+
+
     useEffect(() => {
-        const mockConnections = [
-            '+55 11 99999-9991',
-            '+55 11 88888-8882',
-            '+55 11 77777-7773',
-            '+55 11 99999-9994',
-            '+55 11 88888-8885',
-            '+55 11 77777-7776',
-            '+55 11 99999-9997',
-            '+55 11 88888-8888',
-            '+55 11 77777-7779',
-            '+55 11 99999-9910',
-            '+55 11 88888-8811',
-            '+55 11 77777-7712'
-        ];
-        setConnections(mockConnections);
-        setSelectedNumber(mockConnections[0]);
+        const loadConnections = async () => {
+            try {
+                const permissionsString = await AsyncStorage.getItem('permissions');
+                if (permissionsString) {
+                    const permissions = JSON.parse(permissionsString);
+
+                    // Extrai os números de telefone das conexões do WhatsApp
+                    const whatsappNumbers = permissions[0]?.whatsapp_connections?.map(
+                        (connection: any) => connection.display_phone_number
+                    ) || [];
+
+                    setConnections(whatsappNumbers);
+
+                    if (whatsappNumbers.length > 0) {
+                        setSelectedNumber(whatsappNumbers[0]);
+                    }
+                }
+            } catch (error) {
+                console.error('Erro ao carregar conexões:', error);
+            }
+        };
+
+        loadConnections();
     }, []);
 
     return (
@@ -55,11 +64,16 @@ const WhatsAppMenu = ({ onConnectionSelect, onConnectWhatsAppCreate, onConnectWh
                                 </TouchableOpacity>
                             ))}
                         </ScrollView>
-                        <View style={styles.separator} />
-                        <TouchableOpacity style={styles.connectButton} onPress={() => { setMenuVisible(false); onConnectWhatsAppUpdate(); }} >
-                            <Text style={styles.connectButtonText}>Alterar este WhatsApp</Text>
-                        </TouchableOpacity>
-                        <View style={styles.separator} />
+                        {connections.length > 0 && (
+                            <>
+                                <View style={styles.separator} />
+                                <TouchableOpacity
+                                    style={styles.connectButton} onPress={() => { setMenuVisible(false); onConnectWhatsAppUpdate(); }} >
+                                    <Text style={styles.connectButtonText}>Alterar este WhatsApp</Text>
+                                </TouchableOpacity>
+
+                                <View style={styles.separator} />
+                            </>)}
                         <TouchableOpacity style={styles.connectButton} onPress={() => { setMenuVisible(false); onConnectWhatsAppCreate(); }} >
                             <Text style={styles.connectButtonText}>Adicionar WhatsApp</Text>
                         </TouchableOpacity>

@@ -69,6 +69,7 @@ const Login = () => {
         password: password.trim()
       });
 
+      console.log(response.data);
       if (response.data.success) {
 
         await AsyncStorage.multiSet([
